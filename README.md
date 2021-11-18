@@ -29,4 +29,4 @@ Difference if the profile is administrator or user.
     Start project
 
     ```sh
-    yarn dev
+    yarn start
