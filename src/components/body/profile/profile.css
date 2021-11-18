@@ -73,7 +73,7 @@
     background: #fee;
     padding: 0 5px;
 }
-.profile_page .col-left button{
+.profile_page .col-left button, .col-right button{
     background: #333;
     color: white;
     padding: 10px 25px;
@@ -93,6 +93,11 @@
     text-transform: uppercase;
     color: #333;
     margin: 10px 0;
+}
+.title-profile{
+    display: flex;
+    justify-content: space-between;
+    
 }
 
 /* ------------ Table------------ */

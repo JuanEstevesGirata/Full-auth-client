@@ -24,7 +24,7 @@ const Landing = () => {
       getToken()
       
     }
-  }, [auth.isLogged])
+  }, [auth.isLogged, dispatch])
 
   useEffect(()=> {
     if(token){
@@ -40,9 +40,21 @@ const Landing = () => {
   }, [token, dispatch])
 
   return (
-    <div>
-      INGRESO CON EXITO  
-    </div>
+    <>
+      <div>
+        <h1>INGRESO CON EXITO</h1>
+      </div>
+      <style jsx>
+        {`
+          div {
+            text-align: center;
+          }
+          h1{
+            position:relative;
+          }
+        `}
+      </style>
+    </>
   )
 }
 

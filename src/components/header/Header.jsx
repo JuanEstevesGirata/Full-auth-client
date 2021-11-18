@@ -1,6 +1,5 @@
 import {Link} from 'react-router-dom'
 import {useSelector} from 'react-redux'
-import axios from 'axios'
 import UserLink from './UserLink'
 
 
@@ -9,9 +8,7 @@ function Header() {
 
     const {user, isLogged} = auth
 
-    console.log(auth)
-
-
+  
     const handleLogout = async () => {
         try {
             // await axios.get('/user/logout')

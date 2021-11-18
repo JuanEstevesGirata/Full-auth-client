@@ -5,7 +5,7 @@ import axios from 'axios'
 import { 
   showErrMsg,
   showSuccessMsg
-} from '../../utils/notification/Notification'
+} from '../../notification/Notification'
 import { dispatchLogin } from '../../../redux/actions/authAction'
 import { useDispatch } from 'react-redux'
 // import { GoogleLogin } from 'react-google-login';

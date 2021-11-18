@@ -2,8 +2,8 @@ import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import {useSelector, useDispatch} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {isLength, isMatch} from '../../utils/validation/Validation'
-import {showSuccessMsg, showErrMsg} from '../../utils/notification/Notification'
+import {isLength, isMatch} from '../../../utils/validation/Validation'
+import {showSuccessMsg, showErrMsg} from '../../notification/Notification'
 import {fetchAllUsers, dispatchGetAllUsers} from '../../../redux/actions/usersAction'
 
 const initialState = {
@@ -181,11 +181,16 @@ function Profile() {
                 </div>
 
                 <button disabled={loading} onClick={handleUpdate}>Update</button>
+                
             </div>
 
-            <div className="col-right">
-                <h2>{isAdmin ? "Users" : "My Orders"}</h2>
-
+            <div className ="col-right">
+                <div className = "title-profile" >
+                    <h2>{isAdmin ? "Users" : "My Orders"}</h2>
+                    <Link to= '/create_user'>
+                    <button disabled={loading} onClick={handleUpdate}>Create User</button>
+                    </Link>
+                </div>    
                 <div style={{overflowX: "auto"}}>
                     <table className="customers">
                         <thead>
@@ -200,8 +205,8 @@ function Profile() {
                         <tbody>
                             {
                                 users.map(user => (
-                                    <tr key={user._id}>
-                                        <td>{user._id}</td>
+                                    <tr key={user.id}>
+                                        <td>{user.id}</td>
                                         <td>{user.name}</td>
                                         <td>{user.email}</td>
                                         <td>
@@ -212,11 +217,11 @@ function Profile() {
                                             }
                                         </td>
                                         <td>
-                                            <Link to={`/edit_user/${user._id}`}>
+                                            <Link to={`/edit_user/${user.id}`}>
                                                 <i className="fas fa-edit" title="Edit"></i>
                                             </Link>
                                             <i className="fas fa-trash-alt" title="Remove"
-                                            onClick={() => handleDelete(user._id)} ></i>
+                                            onClick={() => handleDelete(user.id)} ></i>
                                         </td>
                                     </tr>
                                 ))

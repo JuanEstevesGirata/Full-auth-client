@@ -1,8 +1,10 @@
 import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-import {showErrMsg, showSuccessMsg} from '../../utils/notification/Notification'
-import {isEmpty, isEmail, isLength, isMatch} from '../../utils/validation/Validation'
+import {showErrMsg, showSuccessMsg} from '../../notification/Notification'
+import {isEmpty, isEmail, isLength, isMatch} from '../../../utils/validation/Validation'
+import { useSelector } from 'react-redux'
+
 
 
 const initialState = {
@@ -11,17 +13,26 @@ const initialState = {
     password: '',
     cf_password: '',
     err: '',
-    success: ''
+    success: '',
+    role:''
 }
 
 function Register() {
     const [user, setUser] = useState(initialState)
+    const auth = useSelector(state => state.auth)
+    const {name, email, role, password,cf_password, err, success} = user
 
-    const {name, email, password,cf_password, err, success} = user
+    
 
     const handleChangeInput = e => {
         const {name, value} = e.target
-        setUser({...user, [name]:value, err: '', success: ''})
+        setUser({...user, [name]:value, err: '', success: '', role:''})
+    }
+
+    const handleChangeSelect = e => {
+        const {value} = e.target
+        setUser({...user, role:value, err: '', success: ''})
+        console.log(value)
     }
 
 
@@ -40,11 +51,19 @@ function Register() {
             return setUser({...user, err: "Password did not match.", success: ''})
 
         try {
-            const res = await axios.post('http://localhost:3005/api/register', {
-                name, email, password
+            if(auth.isAdmin){
+                const res = await axios.post('http://localhost:3005/api/register_admin', {
+                    name, email, password, role
             })
+                setUser({...user, err: '', success: res.data.msg})
+            } else {
+                const res = await axios.post('http://localhost:3005/api/register', {
+                    name, email, password
+            })
+                setUser({...user, err: '', success: res.data.msg})
+            }
+            
 
-            setUser({...user, err: '', success: res.data.msg})
         } catch (err) {
             console.log(err.response)
             err.response.data.msg && 
@@ -82,13 +101,27 @@ function Register() {
                     <input type="password" placeholder="Confirm password" id="cf_password"
                     value={cf_password} name="cf_password" onChange={handleChangeInput} />
                 </div>
+            
+            {auth.isAdmin
 
+              ?<div>
+                    <label htmlFor="cf_password">Role  </label>
+                    <select name="select" onClick={handleChangeSelect}>
+                        <option value="0" selected>Estudiante</option>
+                        <option value="1">Administrador</option>
+                        <option value="2">Formador</option>
+                    </select>
+                </div>
+                :''
+            }
                 <div className="row">
                     <button type="submit">Register</button>
                 </div>
             </form>
-
-            <p>Already an account? <Link to="/login">Login</Link></p>
+            {auth.isAdmin
+             ?''
+              :<p>Already an account? <Link to="/login">Login</Link></p>
+            }
         </div>
     )
 }
